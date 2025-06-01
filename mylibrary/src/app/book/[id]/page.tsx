@@ -22,6 +22,12 @@ export default async function BookDetail(props: Props) {
         <p className="mt-4">Description: {book.description}</p>
         <p className="mt-4 text-sm text-gray-500">Status: {book.read ? 'Read' : 'Unread'}</p>
       </div>
+      <MyButton href={`/edit/${book.id}`} variant="primary">
+        Edit Book
+      </MyButton>
+      <MyButton href={`/`} variant="destructive">
+        Delete Book
+      </MyButton>
       <MyButton href="/" variant="outline">
         ← Back to Home
       </MyButton>

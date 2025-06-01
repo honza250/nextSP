@@ -1,5 +1,4 @@
 import { GenreFilter } from '@/components/GenreFilter';
-import { genres } from '@/components/BookGenreSelect';
 import prisma from '@/lib/prisma';
 import BookCard from '@/components/BookCard';
 import Link from 'next/link';
@@ -9,7 +8,7 @@ type Props = {
 };
 
 export default async function HomePage({ searchParams }: Props) {
-  const genre = await searchParams?.genre;
+  const genre = searchParams.genre;
 
   const books = await prisma.book.findMany({
     where: genre ? { genre } : undefined,

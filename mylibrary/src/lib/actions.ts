@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 
+// CREATE BOOK
 export async function createBook(data: {
   title: string;
   author: string;
@@ -55,5 +56,34 @@ export async function toggleRead(formData: FormData) {
     });
   } catch (error) {
     console.error('Error toggling read status:', error);
+  }
+}
+
+// GET BOOK BY ID
+export async function getBookById(id: string) {
+  try {
+    return await prisma.book.findUnique({ where: { id } });
+  } catch (error) {
+    console.error('Error fetching book:', error);
+    return null;
+  }
+}
+
+// UPDATE BOOK
+export async function updateBook(id: string, data: {
+  title: string;
+  author: string;
+  genre: string;
+  description?: string;
+}) {
+  try {
+    await prisma.book.update({
+      where: { id },
+      data,
+    });
+    return true;
+  } catch (error) {
+    console.error('Error updating book:', error);
+    return false;
   }
 }
