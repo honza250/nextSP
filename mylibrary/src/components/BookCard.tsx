@@ -1,29 +1,64 @@
+'use client';
+
 import Link from 'next/link';
 import { deleteBook, toggleRead } from '@/lib/actions';
-import { MyButton } from './MyButton';
-
+import { useTransition } from 'react';
+import { MyButton } from './MyButton'; // ← přidat import
 
 export default function BookCard({ book }: { book: any }) {
+  const [isPending, startTransition] = useTransition();
+
+  const handleToggle = () => {
+    const formData = new FormData();
+    formData.append('id', book.id);
+    startTransition(() => {
+      toggleRead(formData);
+    });
+  };
+
+  const handleDelete = () => {
+    const formData = new FormData();
+    formData.append('id', book.id);
+    startTransition(() => {
+      deleteBook(formData);
+    });
+  };
+
   return (
-    <div className="border p-4 rounded shadow-sm flex flex-col justify-between gap-4">
-      <div>
-        <h2 className="text-xl font-semibold">{book.title}</h2>
-        <p className="text-gray-600 text-sm">{book.author}</p>
-        <p className="text-sm text-gray-500 mt-2">{book.description}</p>
-      </div>
+    <div className="border p-4 rounded shadow-sm space-y-2">
+      <Link href={`/book/${book.id}`}>
+        <h2
+          className={`text-lg font-semibold ${
+            book.read ? 'line-through text-gray-500' : ''
+          }`}
+        >
+          {book.title}
+        </h2>
+      </Link>
+      <p className="text-sm text-gray-700">{book.author}</p>
+      {book.genre && <p className="text-xs text-gray-500">Genre: {book.genre}</p>}
+      {book.description && (
+        <p className="text-sm text-gray-600">{book.description}</p>
+      )}
 
-      <div className="flex gap-2 flex-wrap mt-4">
-        <form action={toggleRead}>
-          <input type="hidden" name="id" value={book.id} />
-          <MyButton variant="success">Mark as Read</MyButton>
-        </form>
-
-        <form action={deleteBook}>
-          <input type="hidden" name="id" value={book.id} />
-          <MyButton variant="destructive" type="submit">Delete</MyButton>
-        </form>
-
-        <MyButton href={`/book/${book.id}`}>View Details</MyButton>
+      <div className="flex gap-2 mt-2">
+        <MyButton
+          onClick={handleToggle}
+          disabled={isPending}
+          variant="success"
+        >
+          {book.read ? 'Mark as unread' : 'Mark as read'}
+        </MyButton>
+        <MyButton
+          onClick={handleDelete}
+          disabled={isPending}
+          variant="destructive"
+        >
+          Delete
+        </MyButton>
+        <Link href={`/book/${book.id}`} className="text-blue-600 hover:underline">
+          View Details
+        </Link>
       </div>
     </div>
   );
