@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { MyButton } from '@/components/MyButton';
+import { DeleteBookButton } from '@/components/delete'; 
 
 type Props = {
   params: { id: string };
@@ -25,9 +26,7 @@ export default async function BookDetail(props: Props) {
       <MyButton href={`/edit/${book.id}`} variant="primary">
         Edit Book
       </MyButton>
-      <MyButton href={`/`} variant="destructive">
-        Delete Book
-      </MyButton>
+      <DeleteBookButton id={book.id} />
       <MyButton href="/" variant="outline">
         ← Back to Home
       </MyButton>
