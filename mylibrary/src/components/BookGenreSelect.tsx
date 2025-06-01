@@ -8,7 +8,7 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-const genres = [
+export const genres = [
   'Akční',
   'Fantasy',
   'Sci-fi',

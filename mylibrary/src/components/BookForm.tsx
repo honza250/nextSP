@@ -8,10 +8,12 @@ import { BookGenreSelect } from './BookGenreSelect';
 export default function BookForm() {
   const router = useRouter();
   const [form, setForm] = useState({ title: '', author: '', genre: '', description: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     await createBook(form);
+    setIsSubmitting(true); // <- zapni spinner
     router.push('/');
   };
 
@@ -24,7 +26,17 @@ export default function BookForm() {
         onChange={(genre) => setForm({ ...form, genre })}
       />
       <textarea placeholder="Description" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
-      <button type="submit" className="bg-blue-600 text-white p-2 rounded">Add Book</button>
+      <button
+        type="submit"
+        className="bg-blue-600 text-white p-2 rounded disabled:opacity-50"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? 'Přidávám…' : 'Add Book'}
+      </button>
+
+      {isSubmitting && (
+        <p className="text-sm text-gray-500 italic">Přesměrovávám na hlavní stránku…</p>
+      )}
     </form>
   );
 }
