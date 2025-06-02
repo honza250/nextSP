@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { MyButton } from '@/components/MyButton';
-import { DeleteBookButton } from '@/components/delete'; 
+import { DeleteBookButton } from '@/components/Delete'; 
 
 type Props = {
   params: Promise<{ id: string }>;
