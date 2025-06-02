@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { createBook } from '@/lib/actions';
+import React from 'react';
+import { createBook } from '../lib/actions';
 import { useRouter } from 'next/navigation';
 import { BookGenreSelect } from './BookGenreSelect';
 
@@ -12,8 +13,8 @@ export default function BookForm() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await createBook(form);
     setIsSubmitting(true); // <- zapni spinner
+    await createBook(form);
     router.push('/');
   };
 

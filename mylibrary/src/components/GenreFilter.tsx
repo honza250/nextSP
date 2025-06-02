@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { genres } from './BookGenreSelect';
+import  React from 'react';
 
 export function GenreFilter() {
   const router = useRouter();
