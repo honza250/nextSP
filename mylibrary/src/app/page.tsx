@@ -4,11 +4,11 @@ import BookCard from '@/components/BookCard';
 import Link from 'next/link';
 
 type Props = {
-  searchParams: { genre?: string };
+  searchParams: Promise<{ genre?: string }>;
 };
 
 export default async function HomePage({ searchParams }: Props) {
-  const genre = searchParams.genre;
+  const genre = (await searchParams).genre;
 
   const books = await prisma.book.findMany({
     where: genre ? { genre } : undefined,

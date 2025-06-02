@@ -3,15 +3,19 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { BookGenreSelect, genres } from '@/components/BookGenreSelect';
+import { BookGenreSelect } from '@/components/BookGenreSelect';
 import { updateBook, getBookById } from '@/lib/actions';
+import { MyButton } from '@/components/MyButton';
+import { use } from 'react';
+
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export default function EditBookPage({ params }: Props) {
+export default function EditBookPage(_props: Props) {
   const router = useRouter();
+  const { id } = use(_props.params);
   const [form, setForm] = useState({
     title: '',
     author: '',
@@ -23,7 +27,7 @@ export default function EditBookPage({ params }: Props) {
 
   useEffect(() => {
     async function fetchBook() {
-      const book = await getBookById(params.id);
+      const book = await getBookById(id);
       if (book) {
         setForm({
           title: book.title,
@@ -35,12 +39,12 @@ export default function EditBookPage({ params }: Props) {
       setLoading(false);
     }
     fetchBook();
-  }, [params.id]);
+  }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await updateBook(params.id, form);
-    router.push(`/book/${params.id}`);
+    await updateBook(id, form);
+    router.push(`/`);
   };
 
   if (loading) return <p className="p-6">Načítám data knihy…</p>;
@@ -73,9 +77,12 @@ export default function EditBookPage({ params }: Props) {
           onChange={(e) => setForm({ ...form, description: e.target.value })}
           className="border p-2 rounded"
         />
-        <button type="submit" className="bg-blue-600 text-white p-2 rounded">
-          Save Changes
-        </button>
+        
+        <MyButton type="submit">Save Changes</MyButton>
+        <MyButton href={`/book/${id}`} variant="outline" className="bg-gray-300 text-gray-800 p-2 rounded">
+          Cancel
+        </MyButton>
+
       </form>
     </main>
   );

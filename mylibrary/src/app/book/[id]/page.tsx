@@ -4,7 +4,7 @@ import { MyButton } from '@/components/MyButton';
 import { DeleteBookButton } from '@/components/delete'; 
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function BookDetail(props: Props) {
